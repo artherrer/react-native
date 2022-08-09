@@ -1,9 +1,9 @@
-
-
 import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import TweetDetail from '../screens/TweetDetail';
 import Profile from '../screens/Profile';
@@ -13,9 +13,8 @@ import Search from '../screens/Search';
 import Home from '../screens/Home';
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 const Drawer = createDrawerNavigator();
-
 
 function DrawerNavigation() {
   return (
@@ -32,15 +31,41 @@ function TabNavigation() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-      }}
-    >
-      <Tab.Screen name="StackNavigation" component={StackNavigation} options={{ title: "Home" }} />
-      <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="Notifications" component={Notifications} options={{ tabBarBadge: 3 }} />
+      }}>
+      <Tab.Screen
+        name="StackNavigation"
+        component={StackNavigation}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({color}) => (
+            <MaterialIcons name="search" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Notifications"
+        component={Notifications}
+        options={{
+          tabBarBadge: 3,
+          title: 'Home',
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons name="bell" color={color} size={26} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
-
 
 function StackNavigation() {
   return (
@@ -48,17 +73,13 @@ function StackNavigation() {
       initialRouteName="Home"
       screenOptions={{
         headerShown: false,
-      }}
-    >
+      }}>
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="TweetDetail" component={TweetDetail} />
     </Stack.Navigator>
-  )
+  );
 }
 
-
 export default function Navigations() {
-  return (
-    <DrawerNavigation />
-  );
+  return <DrawerNavigation />;
 }
