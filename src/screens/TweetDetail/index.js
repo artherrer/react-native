@@ -1,46 +1,39 @@
 import React, {useEffect} from 'react';
-import {
-  View,
-  FlatList,
-  KeyboardAvoidingView,
-} from 'react-native';
-import {
-  TextInput,
-} from 'react-native-gesture-handler';
+import { View, FlatList, KeyboardAvoidingView } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
-import elements from '../../assets/js/elements';
 import Comment from '../../components/comment';
 import Post from '../../components/post';
+import firebase from '../../services/firebase';
 
-export default function TweetDetail({route}) {
+export default function TweetDetail({ route }) {
+
   const [comments, setComments] = React.useState([]);
-  const element = elements.find(element => element.id === route.params.id);
-
-  const getRandomNmber = () => {
-    return Math.floor(Math.random() * (8 - 0 + 1)) + 0;
-  };
+  const [loading, setLoading] = React.useState(true);
+  const [post, setPost] = React.useState(null);
 
   useEffect(() => {
-    const comments = [];
-    for (let i = 0; i < getRandomNmber(); i++) {
-      comments.push({
-        id: i,
-        user: elements[i].user,
-        comment:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
-      });
+    const getPost = async () => {
+      const post = await firebase.getPost(route.params.id);
+      setPost(post);
+      setComments(post.comments);
+      setLoading(false);
     }
-
-    setComments(comments);
+    getPost();
   }, []);
 
+  
   const renderHeader = () => {
-    return <Post {...element} />;
+    return <Post {...post} />;
   };
 
   const renderComment = item => {
     return <Comment {...item} />;
   };
+
+  if (loading && !post) {
+    return null;
+  }
 
   return (
     <KeyboardAvoidingView style={{flex: 1}} behavior={'padding'}>

@@ -46,7 +46,7 @@ function TabNavigation() {
         name="Search"
         component={Search}
         options={{
-          title: 'Home',
+          title: 'Search',
           tabBarIcon: ({color}) => (
             <MaterialIcons name="search" color={color} size={26} />
           ),
@@ -56,8 +56,8 @@ function TabNavigation() {
         name="Notifications"
         component={Notifications}
         options={{
-          tabBarBadge: 3,
-          title: 'Home',
+          tabBarBadge: 100,
+          title: 'Notifications',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="bell" color={color} size={26} />
           ),
