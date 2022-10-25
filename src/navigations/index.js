@@ -16,6 +16,9 @@ import Home from '../screens/Home';
 import Login from '../screens/Auth/Login';
 import Signup from '../screens/Auth/Signup';
 
+// Layout
+import DrawerNavigator from '../screens/Layout/Drawer';
+
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -35,17 +38,10 @@ function AuthStack() {
 
 function DrawerNavigation() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator drawerContent={props => <DrawerNavigator {...props} />}>
       <Drawer.Screen name="Home" component={TabNavigation} />
       <Drawer.Screen name="Profile" component={Profile} />
       <Drawer.Screen name="Settings" component={Settings} />
-      <Drawer.Screen
-        name="Logout"
-        component={() => {
-          auth().signOut();
-          return null;
-        }}
-      />
     </Drawer.Navigator>
   );
 }

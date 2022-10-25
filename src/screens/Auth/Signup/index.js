@@ -2,8 +2,11 @@ import React from 'react';
 import {Input, Text, Box, VStack, Button, HStack, Icon} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import {ActivityIndicator} from 'react-native';
 export default function Signup({navigation}) {
+  const [name, setName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -17,11 +20,17 @@ export default function Signup({navigation}) {
   };
 
   const handleSignup = () => {
-    console.warn(email, password);
     setLoading(true);
     auth()
       .createUserWithEmailAndPassword(email, password)
       .then(response => {
+        return database().ref(`/users/${response.user.uid}`).set({
+          name,
+          lastName,
+          email,
+        });
+      })
+      .then(() => {
         setLoading(false);
       })
       .catch(error => {
@@ -73,6 +82,24 @@ export default function Signup({navigation}) {
             Signup
           </Text>
           {errorMessage && <Text color={'red.500'}>{errorMessage}</Text>}
+          <Box>
+            <Text color={'white'}>Name</Text>
+            <Input
+              variant="filled"
+              placeholder="Name"
+              value={name}
+              onChangeText={text => setName(text)}
+            />
+          </Box>
+          <Box>
+            <Text color={'white'}>Last Name</Text>
+            <Input
+              variant="filled"
+              placeholder="Last Name"
+              value={lastName}
+              onChangeText={text => setLastName(text)}
+            />
+          </Box>
           <Box>
             <Text color={'white'}>Email</Text>
             <Input
